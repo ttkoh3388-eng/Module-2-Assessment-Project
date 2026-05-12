@@ -1,5 +1,5 @@
 const JSONBIN_API_URL="https://api.jsonbin.io/v3";
-const JSONBIN_ID="6a0191b3250b1311c3325f85";
+const JSONBIN_ID="6a02be74adc21f119a893a10";
 const MASTER_KEY="$2a$10$tADpYBk6l5kMdzst7EK57eS1uilsTE.vibtZXUZjM3e1bqEeDDzCq";
 
 // use `let` so that we re-assign to it
@@ -7,12 +7,12 @@ let tasks = [
    
 ]
 
-function addTask(tasks, newName, newDateDue, newUrgency) {
+function addTask(tasks, newName, newEntryDate, newCategorization) {
     let newTask = {
         id: Math.floor(Math.random() * 10000) + 1,
         name: newName,
-        dateDue: newDateDue,
-        urgency: newUrgency
+        entryDate: newEntryDate,
+        categorization: newCategorization
     }
     tasks.push(newTask);
 }
@@ -38,12 +38,12 @@ function deleteTask(tasks, idToDelete) {
     }
 }
 
-function updateTask(tasks, idToUpdate, newName, newDateDue, newUrgency) {
+function updateTask(tasks, idToUpdate, newName, newEntryDate, newCategorization) {
     let modifiedTask = {
         id: idToUpdate,
         name: newName,
-        dateDue: newDateDue,
-        urgency: newUrgency
+        entryDate: newEntryDate,
+        categorization: newCategorization
     }
 
     let indexToUpdate = -1;
@@ -62,7 +62,10 @@ function updateTask(tasks, idToUpdate, newName, newDateDue, newUrgency) {
 }
 
 async function loadTasks() {
+console.log('test');
     const url = `${JSONBIN_API_URL}/b/${JSONBIN_ID}/latest`;
+    //const url = "https://api.jsonbin.io/v3/b/6a02be74adc21f119a893a10/latest";
+    console.log(url);
     const response = await axios.get(url);
     return response.data.record;
 }
@@ -74,5 +77,5 @@ async function saveTasks(tasks) {
             "X-Master-Key": MASTER_KEY
         }
     })
-    return response.data || [];
+    return response.data;
 }

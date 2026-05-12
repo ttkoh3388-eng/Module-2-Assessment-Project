@@ -1,22 +1,22 @@
 // DOMContentLoaded is an event that happens automatically when all the HTML elements have been created
 // in other words, when the event happens, the webpage is ready
 document.addEventListener("DOMContentLoaded", async function () {
-
     tasks = await loadTasks();
     // the tasks array is from data.js global scope
+    console.log("this is script tasks: ",tasks);
     displayTasks(tasks);
+
 
     const addTodoButton = document.querySelector("#addTodo");
     addTodoButton.addEventListener("click", function () {
         const name = document.querySelector("#name").value;
-        const dueDate = document.querySelector("#dueDate").value;
-        const urgency = document.querySelector("#urgency").value;
-
-        addTask(tasks, name, dueDate, urgency);
+        const entryDate = document.querySelector("#entryDate").value;
+        const categorization = document.querySelector("#categorization").value;
+        console.log(name, entryDate, categorization);
+        addTask(tasks, name, entryDate, categorization);
         saveTasks(tasks);
 
         displayTasks(tasks);
-
 
     })
 
@@ -30,23 +30,21 @@ function displayTasks(tasks) {
     taskListUl.innerText = "";
 
 
-    for (let t of tasks) {
+    tasks.forEach(function(t) {
         const liElement = document.createElement("li");
         liElement.className = "list-group-item";
         // alternatively:
         // liElement.classList.add('list-group-item');
         // liElement.classList.add('d-flex');
         // liElement.classList.add('justify-content-between');
-
+        console.log("t of the inside task loop ",t);
         liElement.innerHTML = `
         <div class="row">
             <div class="col-6">${t.name}</div>
-            <div class="col">Date Due: ${t.dateDue}</div>
-            <div class="col">Urgency: ${t.urgency}</div>
-            <div class="col">
-                <button class="m-2 btn btn-danger btn-sm delete-btn">Delete</button>
-                <button class="m-2 btn btn-success btn-sm update-btn">Update</button>
-            </div>
+            <div class="col">Entry Date: ${t.entryDate}</div>
+            <div class="col">Categorization: ${t.categorization}</div>
+            <button class = 'update-btn'>Update</button>
+            <button class = 'delete-btn'>Delete</button>
         </div>
         `
 
@@ -68,7 +66,7 @@ function displayTasks(tasks) {
         //     displayTasks(tasks);
         // })
 
-        // v2: using SweetAlert
+        //v2: using SweetAlert
         updateBtn.addEventListener("click", function () {
             Swal.fire({
                 "title": `Update task: ${t.name}`,
@@ -79,17 +77,17 @@ function displayTasks(tasks) {
                             <input type="text" id="newName" class="form-control" value="${t.name}" />
                         </div>
                         <div class="m-2">
-                            <label>Date Due</label>
-                            <input type="date" id="newDueDate" class="form-control" value="${t.dateDue}"/>
+                            <label>Entry Date</label>
+                            <input type="date" id="newEntryDate" class="form-control" value="${t.entryDate}"/>
                         </div>
                         <div class="m-2">
-                            <label>Urgency</label>
+                            <label>Categorization</label>
                             <select id="newUrgency" class="form-control">
-                            <option value="1" ${t.urgency == 1 ? "selected" : ""}>1</option>
-                            <option value="2" ${t.urgency == 2 ? "selected" : ""}>2</option>
-                            <option value="3" ${t.urgency == 3 ? "selected" : ""}>3</option>
-                            <option value="4" ${t.urgency == 4 ? "selected" : ""}>4</option>
-                            <option value="5" ${t.urgency == 5 ? "selected" : ""}>5</option>
+                            <option value="Beverages" ${t.categorization == Beverages ? "selected" : ""}>Beverages</option>
+                            <option value="Read-To-Eat" ${t.categorization == Read-To-Eat ? "selected" : ""}>2</option>
+                            <option value="Snacks" ${t.categorization == Snacks ? "selected" : ""}>3</option>
+                            <option value="Fresh-Food" ${t.categorization == Fresh-Food ? "selected" : ""}>4</option>
+                            <option value="Tobaco" ${t.categorization == Tobaco ? "selected" : ""}>5</option>
                             </select>
 
                         </div>
@@ -97,12 +95,12 @@ function displayTasks(tasks) {
                                     `,
                 showCancelButton: true,
                 showCloseButton: true,
-                preConfirm: function() {
+                preConfirm: function () {
                     // preConfirm is called when the user pressed on the confirm button
                     let newTaskName = document.querySelector("#newName").value;
-                    let newDateDue = document.querySelector("#newDueDate").value;
-                    let newUrgency = document.querySelector("#newUrgency").value;
-                    
+                    let newEntryDate = document.querySelector("#newEntryDate").value;
+                    let newCategorization = document.querySelector("#newCategorization").value;
+
                     updateTask(tasks, t.id, newTaskName, newDateDue, newUrgency);
                     saveTasks(tasks);
                     displayTasks(tasks);
@@ -111,7 +109,7 @@ function displayTasks(tasks) {
         })
 
         taskListUl.appendChild(liElement);
-    }
+    })
 
 
 }
