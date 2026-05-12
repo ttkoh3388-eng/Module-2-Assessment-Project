@@ -3,7 +3,7 @@
 document.addEventListener("DOMContentLoaded", async function () {
     tasks = await loadTasks();
     // the tasks array is from data.js global scope
-    console.log("this is script tasks: ",tasks);
+
     displayTasks(tasks);
 
 
@@ -30,14 +30,14 @@ function displayTasks(tasks) {
     taskListUl.innerText = "";
 
 
-    tasks.forEach(function(t) {
+    for (let t of tasks) {
         const liElement = document.createElement("li");
         liElement.className = "list-group-item";
         // alternatively:
         // liElement.classList.add('list-group-item');
         // liElement.classList.add('d-flex');
         // liElement.classList.add('justify-content-between');
-        console.log("t of the inside task loop ",t);
+        console.log("t of the inside task loop ", t);
         liElement.innerHTML = `
         <div class="row">
             <div class="col-6">${t.name}</div>
@@ -46,7 +46,7 @@ function displayTasks(tasks) {
             <button class = 'update-btn'>Update</button>
             <button class = 'delete-btn'>Delete</button>
         </div>
-        `
+    
 
         // retrieve the delete button inside liElement
         const deleteBtn = liElement.querySelector(".delete-btn");
@@ -56,20 +56,11 @@ function displayTasks(tasks) {
             displayTasks(tasks);
         })
 
-        const updateBtn = liElement.querySelector(".update-btn");
-        // v1: plain version using prompt
-        // updateBtn.addEventListener("click", function(){
-        //     const newName = prompt("Enter the new name", t.name);
-        //     const newDate = prompt("Enter the new date", t.dateDue);
-        //     const newUrgency = prompt("Enter the new urgency", t.urgency);
-        //     updateTask(tasks, t.id, newName, newDate, newUrgency);
-        //     displayTasks(tasks);
-        // })
-
-        //v2: using SweetAlert
+         const updateBtn = liElement.querySelector(".update-btn");
+        //v2: Using SweetAlert
         updateBtn.addEventListener("click", function () {
-            Swal.fire({
-                "title": `Update task: ${t.name}`,
+            Swal.fire (){
+                "title": Update task: ${t.name}`,``
                 "html": `
                     <div>
                         <div class="m-2">
@@ -82,34 +73,30 @@ function displayTasks(tasks) {
                         </div>
                         <div class="m-2">
                             <label>Categorization</label>
-                            <select id="newUrgency" class="form-control">
-                            <option value="Beverages" ${t.categorization == Beverages ? "selected" : ""}>Beverages</option>
-                            <option value="Read-To-Eat" ${t.categorization == Read-To-Eat ? "selected" : ""}>2</option>
-                            <option value="Snacks" ${t.categorization == Snacks ? "selected" : ""}>3</option>
-                            <option value="Fresh-Food" ${t.categorization == Fresh-Food ? "selected" : ""}>4</option>
-                            <option value="Tobaco" ${t.categorization == Tobaco ? "selected" : ""}>5</option>
+                            <select id="newCategorization" class="form-control">
+                                <option value="Beverages" ${t.categorization == "Beverages" ? "selected" : ""}>Beverages</option>
+                                <option value="Ready-To-Eat" ${t.categorization == "Ready-To-Eat" ? "selected" : ""}>Ready-To-Eat</option>
+                                <option value="Snacks" ${t.categorization == "Snacks" ? "selected" : ""}>Snacks</option>
+                                <option value="Fresh Food" ${t.categorization == "Fresh Food" ? "selected" : ""}>Fresh Food</option>
+                                <option value="Tobacco" ${t.categorization == "Tobacco" ? "selected" : ""}>Tobacco</option>
                             </select>
-
                         </div>
                     </div>
                                     `,
                 showCancelButton: true,
                 showCloseButton: true,
                 preConfirm: function () {
-                    // preConfirm is called when the user pressed on the confirm button
                     let newTaskName = document.querySelector("#newName").value;
                     let newEntryDate = document.querySelector("#newEntryDate").value;
                     let newCategorization = document.querySelector("#newCategorization").value;
 
-                    updateTask(tasks, t.id, newTaskName, newDateDue, newUrgency);
+                    updateTask(tasks, t.id, newTaskName, newEntryDate, newCategorization);
                     saveTasks(tasks);
                     displayTasks(tasks);
                 }
             });
-        })
+        }
+    
+taskListUl.appendChild(liElement);
+    
 
-        taskListUl.appendChild(liElement);
-    })
-
-
-}
