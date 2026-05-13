@@ -43,9 +43,12 @@ function displayTasks(tasks) {
             <div class="col-6">${t.name}</div>
             <div class="col">Entry Date: ${t.entryDate}</div>
             <div class="col">Categorization: ${t.categorization}</div>
-            <button class = 'update-btn'>Update</button>
-            <button class = 'delete-btn'>Delete</button>
+            <div class="col">
+                <button class = 'update-btn'>Update</button>
+                <button class = 'delete-btn'>Delete</button>
+            </div>
         </div>
+        `
     
 
         // retrieve the delete button inside liElement
@@ -59,8 +62,8 @@ function displayTasks(tasks) {
          const updateBtn = liElement.querySelector(".update-btn");
         //v2: Using SweetAlert
         updateBtn.addEventListener("click", function () {
-            Swal.fire (){
-                "title": Update task: ${t.name}`,``
+            Swal.fire ({
+                "title": `Update task: ${t.name}`,
                 "html": `
                     <div>
                         <div class="m-2">
@@ -95,8 +98,9 @@ function displayTasks(tasks) {
                     displayTasks(tasks);
                 }
             });
-        }
+        })
     
-taskListUl.appendChild(liElement);
+    taskListUl.appendChild(liElement);
     
-
+    }
+}
